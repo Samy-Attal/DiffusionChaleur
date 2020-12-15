@@ -4,10 +4,6 @@
 #define dx 0.001 //= 1mm 
 #define dt 0.000001 //= 1µs
 
-#define nb_X 10
-#define tempsmicro 100000 // ne sera pas dans le code final
-#define temp_simu tempsmicro*dt // en s
-
 typedef struct {
 	char nom[10];
 	double K, C, rho, alpha;
@@ -196,8 +192,12 @@ double** calculChaleur(syst s, int echantillons, double tps) {
 }
 
 int main(){
-    syst fil = initSys(nb_X, dx);
-    double** calcul = calculChaleur(fil, nb_X, temp_simu);
-    writeCalc("data1D.txt", calcul, nb_X, temp_simu);
+    int taille; double t_simu;
+    printf("choisissez la taille du fil en mm : "); taille = readInt();
+    printf("choisissez le temps de simulation en us : "); t_simu = readDouble();
+    t_simu *= dt;
+    syst fil = initSys(taille, dx);
+    double** calcul = calculChaleur(fil, taille, t_simu);
+    writeCalc("resultats.txt", calcul, taille, t_simu);
     return 0;
 }
