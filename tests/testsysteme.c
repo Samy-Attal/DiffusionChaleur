@@ -80,7 +80,7 @@ materiau* initMatiere(char* name){
     
     for(i=0;i<nblignes;i++) {
 		if(fscanf(file,"%s %lf %lf %lf", mater[i].nom, &mater[i].K, &mater[i].C, &mater[i].rho) != 4){
-            printf("attention fichier non conforme : ligne en trop, nom du materiau ou parametre manquant\n");
+            printf("attention fichier non conforme : ligne en trop dans la liste de materiaux, nom du materiau ou parametre manquant\n");
             return mater;
         }
         mater[i].alpha = mater[i].K / (mater[i].C * mater[i].rho);
@@ -116,19 +116,19 @@ syst initSys(int echantillons, double resol_x){
 		choix = readInt();
 	}while(choix > i-1 || choix < 0);
 	s.objet = mater[choix];
+	
 	printf("entrer la temperature initiale du systeme : ");
 	s.initTemp = readDouble(); 
 	printf("\nConfiguration de la source\n");
 	s.src = initSource(echantillons);
-	// initialisation de la temperature initiale du système 
+
 	return s;
 }
 
-
-
 int main(){
-    int i = 0; materiau* m = initMatiere("materiaux.txt");
-	syst fil = initSys(nb_X, dx);
+    int i = 0; 
+	
+	
 
 	return 0;
 }

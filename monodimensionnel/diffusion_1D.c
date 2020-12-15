@@ -191,6 +191,12 @@ double** calculChaleur(syst s, int echantillons, double tps) {
 	return res;
 }
 
+void writeCarac(char* name, syst s){
+    FILE* file = fopen(name, "w");
+    fprintf(file, "%s\ntaille en mm : %d\ntemperature initiale : %1.lf\ntemperature de la source : %1.lf\nposition de la source : %d", s.objet.nom, s.nbEchantillons, s.initTemp, s.src.valTemp,  s.src.posSrc);
+    fclose(file);
+}
+
 int main(){
     int taille; double t_simu;
     printf("choisissez la taille du fil en mm : "); taille = readInt();
@@ -198,6 +204,7 @@ int main(){
     t_simu *= dt;
     syst fil = initSys(taille, dx);
     double** calcul = calculChaleur(fil, taille, t_simu);
-    writeCalc("resultats.txt", calcul, taille, t_simu);
+    writeCalc("resultats_alu.txt", calcul, taille, t_simu);
+    writeCarac("caracteristiques.txt", fil);
     return 0;
 }
