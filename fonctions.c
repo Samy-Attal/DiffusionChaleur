@@ -171,6 +171,42 @@ double** calculChaleur(syst s, int echantillons, double tps) {
 	return res;
 }
 
+source initSource(int echantillons){
+	source src;
+	printf("entrer la temperature de la source : ");
+	src.valTemp = readDouble();
+	printf("entrer la position de la source sur %d echantillons : ", echantillons);
+	src.posSrc = readInt();
+	return src;
+}
+
+syst initSys(int echantillons, double resol_x){
+	syst s; int i, choix = 0;
+	s.resX = resol_x;
+	s.nbEchantillons = echantillons;
+	materiau* mater = initMatiere("materiaux.txt"); 
+	do {
+		if(choix == 0) 
+			printf("choisir le materiau :\n");
+		else
+			printf("materiau non reconnu, choisissez entre :\n");
+		
+		for(i=0;i<cptLignes("materiaux.txt");i++)
+			printf("%d : %s\n", i, mater[i].nom);
+
+		choix = readInt();
+	}while(choix > i-1 || choix < 0);
+	s.objet = mater[choix];
+	
+	printf("entrer la temperature initiale du systeme : ");
+	s.initTemp = readDouble(); 
+	printf("\nConfiguration de la source\n");
+	s.src = initSource(echantillons);
+
+	return s;
+}
+
+
 int main(){
 
 
