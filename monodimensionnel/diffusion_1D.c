@@ -134,7 +134,7 @@ syst initSys(int echantillons, double resol_x){
 
 void writeCalc(char* name, double** calcul, int echantillons, double tps){
 	unsigned long t_micro = tps/dt;
-	printf("echantillons : %d t micro : %ld\n", echantillons, t_micro);
+	printf("calcul effectue, ecriture du fichier %s\n", name);
 	FILE* file = fopen(name, "w");
 	int i, j;
 	for(i=0;i<echantillons;i++){
@@ -150,7 +150,7 @@ void writeCalc(char* name, double** calcul, int echantillons, double tps){
 
 double** calculChaleur(syst s, int echantillons, double tps) {
 	unsigned long t_micro= tps/dt;
-    //printf("temps simu = %ld micro s\n", t_micro);
+    printf("calcul en cours\n");
     double** res = creerMat(echantillons, t_micro + 1);
 	double alpha = s.objet.alpha;	
 	double dT;
@@ -177,15 +177,11 @@ double** calculChaleur(syst s, int echantillons, double tps) {
 
 	for (t = 0; t < t_micro - 1; t++) { 
 		for (x = 1; x < echantillons - 1; x++) {
-			if(x == s.src.posSrc) {
-				res[x][t+2] = s.src.valTemp;
-			} else {
-				res[x][t+2] = (res[x][t+1]/dt); 
-				dT = (res[x-1][t+1] - (2 * res[x][t+1]) + res[x+1][t+1]) / (dx * dx);
-				res[x][t+2] +=  alpha * dT + s.src.valTemp;
-				res[x][t+2] *= dt;
-			}
-			
+			res[x][t+2] = s.src.valTemp;
+			res[x][t+2] = (res[x][t+1]/dt); 
+			dT = (res[x-1][t+1] - (2 * res[x][t+1]) + res[x+1][t+1]) / (dx * dx);
+			res[x][t+2] +=  alpha * dT + s.src.valTemp;
+			res[x][t+2] *= dt;
   		}
 	}
 	return res;
@@ -199,12 +195,14 @@ void writeCarac(char* name, syst s){
 
 int main(){
     int taille; double t_simu;
+	printf("creation du systeme\n");
     printf("choisissez la taille du fil en mm : "); taille = readInt();
     printf("choisissez le temps de simulation en us : "); t_simu = readDouble();
     t_simu *= dt;
     syst fil = initSys(taille, dx);
     double** calcul = calculChaleur(fil, taille, t_simu);
-    writeCalc("resultats_alu.txt", calcul, taille, t_simu);
+    writeCalc("resultats.txt", calcul, taille, t_simu);
     writeCarac("caracteristiques.txt", fil);
+	printf("resultats prets\n");
     return 0;
 }
