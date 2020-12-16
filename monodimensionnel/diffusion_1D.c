@@ -152,9 +152,12 @@ double** calculChaleur(syst s, int echantillons, double tps) {
 	unsigned long t_micro= tps/dt;
     printf("calcul en cours\n");
     double** res = creerMat(echantillons, t_micro + 1);
+	double* source = calloc(echantillons,sizeof(echantillons));
 	double alpha = s.objet.alpha;	
 	double dT;
 	int t, x;
+
+	source[s.src.posSrc] = s.src.valTemp;
 
 	// initialisation de la premiere colonne X
 	for (x = 0; x < echantillons; x++)
@@ -177,8 +180,8 @@ double** calculChaleur(syst s, int echantillons, double tps) {
 
 	for (t = 0; t < t_micro - 1; t++) { 
 		for (x = 1; x < echantillons - 1; x++) {
-			res[x][t+2] = s.src.valTemp;
-			res[x][t+2] = (res[x][t+1]/dt); 
+			res[x][t+2] = source[x];
+			res[x][t+2] += (res[x][t+1]/dt); 
 			dT = (res[x-1][t+1] - (2 * res[x][t+1]) + res[x+1][t+1]) / (dx * dx);
 			res[x][t+2] +=  alpha * dT + s.src.valTemp;
 			res[x][t+2] *= dt;
