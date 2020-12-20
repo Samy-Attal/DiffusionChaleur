@@ -10,8 +10,8 @@ typedef struct {
 }materiau;
 
 typedef struct {
-	int posSrc; // position de la source (si ponctuelle)
-	double valTemp;	//valeur de temperature de la source
+	int posSrc; 
+	double valTemp;	
 }source;
 
 typedef struct {
@@ -26,7 +26,8 @@ double readDouble(){
     double var;
     if(scanf("%lf",&var) != 1){
         printf("erreur lors de la saisie\n");
-    }
+		exit(1);
+	}
     return var;
 }
 
@@ -34,36 +35,41 @@ int readInt(){
     int var;
     if(scanf("%d",&var) != 1){
         printf("erreur lors de la saisie\n");
+		exit(1);
     }
     return var;
 }
-
-char readChar(){
-    char var;
-    if(scanf("%c",&var) != 1){
-        printf("erreur lors de la saisie\n");
-    }
-    return var;
-}
-
 
 double** creerMat(int nb_lignes, int nb_colonnes) {
-	double** mat = malloc(nb_lignes * sizeof(double*));
-	int i = 0;
-	while (i < nb_lignes) {
-		mat[i] = calloc(nb_colonnes, sizeof(double)); 
-		i++;
-	}
-	return mat;
+	    int i; double** mat;
+    if((mat = (double**)malloc(nb_lignes * sizeof(double*))) == NULL) {
+		fprintf(stderr, "erreur d'allocation\n");
+		return 0;
+    }
+    for(i=0;i<nb_lignes;i++) {
+        if((mat[i] = (double*)malloc(nb_colonnes * sizeof(double))) == NULL){
+			fprintf(stderr, "erreur d'allocation\n");
+            return 0;
+        } 
+    }
+    return mat;
 }
 
-//compte le nombres de lignes d'un fichier texte
+void freeMat(double*** mat, int dimX) {
+    int i;
+    for (i = 0; i < dimX; i++) {
+        free(*mat[i]);
+    }
+    free(*mat);
+	*mat = NULL;
+}
+
 int cptLignes(char *name){
     int nb = 1; char c;
     FILE* file = fopen(name, "r");
     if(file == NULL){
         printf("erreur lors de l'ouverture du fichier\n");
-		exit(1);
+		exit(2);
     }
     while((c = fgetc(file)) != EOF){
         if(c == '\n') {
@@ -80,13 +86,13 @@ materiau* initMatiere(char* name){
 	FILE* file = fopen(name,"r");
 	if(file == NULL){
 		printf("erreur lors de l'ouverture du fichier\n");
-		exit(1);
+		exit(2);
 	}
     
     for(i=0;i<nblignes;i++) {
 		if(fscanf(file,"%s %lf %lf %lf", mater[i].nom, &mater[i].K, &mater[i].C, &mater[i].rho) != 4){
             printf("attention fichier non conforme : ligne en trop dans la liste de materiaux, nom du materiau ou parametre manquant\n");
-            return mater;
+			exit(3);
         }
         mater[i].alpha = mater[i].K / (mater[i].C * mater[i].rho);
     }
@@ -125,12 +131,15 @@ syst initSys(int echantillons, double resol_x){
 	printf("entrer la temperature initiale du systeme : ");
 	s.initTemp = readDouble(); 
 	printf("\nConfiguration de la source\n");
-	s.src = initSource(echantillons);
-
+	
+	do{
+		s.src = initSource(echantillons);
+		if(s.src.posSrc < 0 || s.src.posSrc > echantillons){
+			printf("position de la source non valide\n");
+		}
+	}while(s.src.posSrc < 0 || s.src.posSrc > echantillons);
 	return s;
 }
-
-
 
 void writeCalc(char* name, double** calcul, int echantillons, double tps){
 	unsigned long t_micro = tps/dt;
@@ -139,12 +148,11 @@ void writeCalc(char* name, double** calcul, int echantillons, double tps){
 	int i, j;
 	for(i=0;i<echantillons;i++){
 		for(j=0;j<t_micro+1;j++){
-			fprintf(file, "%.1lf ",calcul[i][j]);
+			fprintf(file, "%.0lf ",calcul[i][j]);
 		}
 		fprintf(file, "\n");
 	}
 	fclose(file);
-	//suppMat(calcul, t_micro);
 }
 
 
