@@ -42,12 +42,12 @@ int readInt(){
 
 double** creerMat(int nb_lignes, int nb_colonnes) {
 	    int i; double** mat;
-    if((mat = (double**)malloc(nb_lignes * sizeof(double*))) == NULL) {
+    if(mat = (double**)malloc(nb_lignes * sizeof(double*)) == NULL) {
 		fprintf(stderr, "erreur d'allocation\n");
 		return 0;
     }
     for(i=0;i<nb_lignes;i++) {
-        if((mat[i] = (double*)malloc(nb_colonnes * sizeof(double))) == NULL){
+        if(mat[i] = (double*)malloc(nb_colonnes * sizeof(double)) == NULL){
 			fprintf(stderr, "erreur d'allocation\n");
             return 0;
         } 
