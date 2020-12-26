@@ -1,5 +1,0 @@
-aluminium
-taille en mm : 30
-temperature initiale : 290
-temperature de la source : 350
-position de la source : 15

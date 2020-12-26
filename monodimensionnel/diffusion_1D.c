@@ -41,17 +41,15 @@ int readInt(){
 }
 
 double** creerMat(int nb_lignes, int nb_colonnes) {
-	    int i; double** mat;
-    if(mat = (double**)malloc(nb_lignes * sizeof(double*)) == NULL) {
-		fprintf(stderr, "erreur d'allocation\n");
-		return 0;
-    }
+	int i; double** mat;
+    mat = malloc(nb_lignes * sizeof(double*));
     for(i=0;i<nb_lignes;i++) {
-        if(mat[i] = (double*)malloc(nb_colonnes * sizeof(double)) == NULL){
-			fprintf(stderr, "erreur d'allocation\n");
-            return 0;
-        } 
+        mat[i] = malloc(nb_colonnes * sizeof(double));
     }
+	if(mat == NULL){
+		printf("erreur d'allocation\n");
+		exit(4);
+	}
     return mat;
 }
 
@@ -200,20 +198,23 @@ double** calculChaleur(syst s, int echantillons, double tps) {
 
 void writeCarac(char* name, syst s){
     FILE* file = fopen(name, "w");
-    fprintf(file, "%s\ntaille en mm : %d\ntemperature initiale : %1.lf\ntemperature de la source : %1.lf\nposition de la source : %d", s.objet.nom, s.nbEchantillons, s.initTemp, s.src.valTemp,  s.src.posSrc);
+    fprintf(file, "%s\ntaille en mm : %d\ntemperature initiale : %1.lf\ntemperature de la source : %1.lf\nposition de la source : %d\n", s.objet.nom, s.nbEchantillons, s.initTemp, s.src.valTemp,  s.src.posSrc);
     fclose(file);
 }
 
 int main(){
     int taille; double t_simu;
+	FILE* carac;
 	printf("creation du systeme\n");
     printf("choisissez la taille du fil en mm : "); taille = readInt();
-    printf("choisissez le temps de simulation en us : "); t_simu = readDouble();
-    t_simu *= dt;
+    printf("choisissez le temps de simulation en s : "); t_simu = readDouble();
     syst fil = initSys(taille, dx);
     double** calcul = calculChaleur(fil, taille, t_simu);
     writeCalc("resultats.txt", calcul, taille, t_simu);
     writeCarac("caracteristiques.txt", fil);
+	carac = fopen("caracteristiques.txt", "a");
+	fprintf(carac, "temps de simulation (s) %lf", t_simu);
+	fclose(carac);
 	printf("resultats prets\n");
     return 0;
 }
