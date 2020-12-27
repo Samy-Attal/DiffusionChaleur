@@ -14,5 +14,5 @@ x=1:size(resultats,1);
 figure(1)
 imagesc(t,x,resultats(:,2:end))
 title('1-D Diffusion chaleur');
-xlabel('time samples (us)');
-ylabel('Nb segments');
+xlabel('time samples (s)');
+ylabel('Nb segments (mm)');
