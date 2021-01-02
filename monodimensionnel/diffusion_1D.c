@@ -8,32 +8,32 @@
 avec son nom et ses parametres K, C, rho et alpha*/
 typedef struct {
 	char nom[10];
-	double K, C, rho, alpha;
+	float K, C, rho, alpha;
 }materiau;
 
 /*structure definissant une source de chaleur ponctuelle
 avec sa position (dans un espace 1D) et sa temperature en ce point */
 typedef struct {
 	int posSrc; 
-	double valTemp;	
+	float valTemp;	
 }source;
 
 /*structure definissant le système etudié
 comprenant sa resolution en x, son nombre d'echantillons (sa taille est nbEchantillons x resX, sa temperature initiale, 
 son materiau ainsi que sa source */
 typedef struct {
-	double resX;
+	float resX;
 	int nbEchantillons;
-	double initTemp;
+	float initTemp;
 	materiau objet;
 	source src;
 }syst;
 
 
-/*fonction permettant de recuperer par l'utilisateur un nombre réel de type double */
-double readDouble(){
-    double var;
-    if(scanf("%lf",&var) != 1){
+/*fonction permettant de recuperer par l'utilisateur un nombre réel de type float */
+float readFloat(){
+    float var;
+    if(scanf("%f",&var) != 1){
         printf("erreur lors de la saisie\n");
 		exit(1);
 	}
@@ -51,11 +51,11 @@ int readInt(){
 }
 
 /*fonction de creation de matrice 2D de dimension nb_lignes nb_colonnes*/
-double** creerMat(int nb_lignes, int nb_colonnes) {
-	int i; double** mat;
-    mat = malloc(nb_lignes * sizeof(double*));
+float** creerMat(int nb_lignes, int nb_colonnes) {
+	int i; float** mat;
+    mat = malloc(nb_lignes * sizeof(float*));
     for(i=0;i<nb_lignes;i++) {
-        mat[i] = malloc(nb_colonnes * sizeof(double));
+        mat[i] = malloc(nb_colonnes * sizeof(float));
     }
 	if(mat == NULL){
 		printf("erreur d'allocation\n");
@@ -64,7 +64,7 @@ double** creerMat(int nb_lignes, int nb_colonnes) {
     return mat;
 }
 
-void freeMat(double*** mat, int dimX) {
+void freeMat(float*** mat, int dimX) {
     int i;
     for (i = 0; i < dimX; i++) {
         free(*mat[i]);
@@ -101,7 +101,7 @@ materiau* initMatiere(char* name){
 	}
     
     for(i=0;i<nblignes;i++) {
-		if(fscanf(file,"%s %lf %lf %lf", mater[i].nom, &mater[i].K, &mater[i].C, &mater[i].rho) != 4){
+		if(fscanf(file,"%s %f %f %f", mater[i].nom, &mater[i].K, &mater[i].C, &mater[i].rho) != 4){
             printf("attention fichier non conforme : ligne en trop dans la liste de materiaux, nom du materiau ou parametre manquant\n");
 			exit(3);
         }
@@ -115,14 +115,14 @@ materiau* initMatiere(char* name){
 source initSource(int echantillons){
 	source src;
 	printf("entrer la temperature de la source : ");
-	src.valTemp = readDouble();
+	src.valTemp = readFloat();
 	printf("entrer la position de la source sur %d echantillons : ", echantillons);
 	src.posSrc = readInt();
 	return src;
 }
 
 /*fonction de creation et d'initialisation d'une structure syst */
-syst initSys(int echantillons, double resol_x){
+syst initSys(int echantillons, float resol_x){
 	syst s; int i, choix = 0;
 	s.resX = resol_x;
 	s.nbEchantillons = echantillons;
@@ -141,7 +141,7 @@ syst initSys(int echantillons, double resol_x){
 	s.objet = mater[choix];
 	
 	printf("entrer la temperature initiale du systeme : ");
-	s.initTemp = readDouble(); 
+	s.initTemp = readFloat(); 
 	printf("\nConfiguration de la source\n");
 	
 	do{
@@ -154,14 +154,14 @@ syst initSys(int echantillons, double resol_x){
 }
 
 /*fonction d'ecriture des resultats de calcul de chaleur dans un fichier name*/
-void writeCalc(char* name, double** calcul, int echantillons, double tps){
+void writeCalc(char* name, float** calcul, int echantillons, float tps){
 	unsigned long t_micro = tps/dt;
 	printf("ecriture du fichier %s\n", name);
 	FILE* file = fopen(name, "w");
 	int i, j;
 	for(i=0;i<echantillons;i++){
-		for(j=0;j<t_micro+1;j++){
-			fprintf(file, "%.0lf ",calcul[i][j]);
+		for(j=0;j<t_micro+1;j= j+t_micro/1000){ // augmentation de l'incrementation pr diminuer le nombre de reultats
+			fprintf(file, "%.0f ",calcul[i][j]);
 		}
 		fprintf(file, "\n");
 	}
@@ -169,13 +169,13 @@ void writeCalc(char* name, double** calcul, int echantillons, double tps){
 }
 
 /*fonction de clacul de diffusion de chaleur d'un systeme */
-double** calculChaleur(syst s, int echantillons, double tps) {
+float** calculChaleur(syst s, int echantillons, float tps) {
 	unsigned long t_micro= tps/dt;
     printf("calcul en cours\n");
-    double** res = creerMat(echantillons, t_micro + 1);
-	double* source = calloc(echantillons,sizeof(echantillons));
-	double alpha = s.objet.alpha;	
-	double dT;
+    float** res = creerMat(echantillons, t_micro + 1);
+	float* source = calloc(echantillons,sizeof(echantillons));
+	float alpha = s.objet.alpha;	
+	float dT;
 	int t, x;
 	source[s.src.posSrc] = s.src.valTemp;
 
@@ -212,22 +212,22 @@ double** calculChaleur(syst s, int echantillons, double tps) {
 /*fonction d'ecriture des caracteristiques systeme dans un fichier name*/
 void writeCarac(char* name, syst s){
     FILE* file = fopen(name, "w");
-    fprintf(file, "%s\n%d\n%1.lf\n%1.lf\n%d", s.objet.nom, s.nbEchantillons, s.initTemp, s.src.valTemp,  s.src.posSrc);
+    fprintf(file, "%s\n%d\n%1.f\n%1.f\n%d", s.objet.nom, s.nbEchantillons, s.initTemp, s.src.valTemp,  s.src.posSrc);
     fclose(file);
 }
 
 int main(){
-    int taille; double t_simu;
+    int taille; float t_simu;
 	FILE* carac;
 	printf("creation du systeme\n");
     printf("choisissez la taille du fil en mm : "); taille = readInt();
-    printf("choisissez le temps de simulation en s : "); t_simu = readDouble();
+    printf("choisissez le temps de simulation en s : "); t_simu = readFloat();
     syst fil = initSys(taille, dx);
-    double** calcul = calculChaleur(fil, taille, t_simu);
+    float** calcul = calculChaleur(fil, taille, t_simu);
     writeCalc("resultats.txt", calcul, taille, t_simu);
     writeCarac("caracteristiques.txt", fil);
 	carac = fopen("caracteristiques.txt", "a");
-	fprintf(carac, "\n%lf", t_simu);
+	fprintf(carac, "\n%f", t_simu);
 	fclose(carac);
 	printf("resultats prets\n");
 	
