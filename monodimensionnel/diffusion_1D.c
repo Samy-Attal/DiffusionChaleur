@@ -64,7 +64,6 @@ double** creerMat(int nb_lignes, int nb_colonnes) {
     return mat;
 }
 
-
 void freeMat(double*** mat, int dimX) {
     int i;
     for (i = 0; i < dimX; i++) {
@@ -157,7 +156,7 @@ syst initSys(int echantillons, double resol_x){
 /*fonction d'ecriture des resultats de calcul de chaleur dans un fichier name*/
 void writeCalc(char* name, double** calcul, int echantillons, double tps){
 	unsigned long t_micro = tps/dt;
-	printf("calcul effectue, ecriture du fichier %s\n", name);
+	printf("ecriture du fichier %s\n", name);
 	FILE* file = fopen(name, "w");
 	int i, j;
 	for(i=0;i<echantillons;i++){
@@ -213,7 +212,7 @@ double** calculChaleur(syst s, int echantillons, double tps) {
 /*fonction d'ecriture des caracteristiques systeme dans un fichier name*/
 void writeCarac(char* name, syst s){
     FILE* file = fopen(name, "w");
-    fprintf(file, "%s\ntaille en mm : %d\ntemperature initiale : %1.lf\ntemperature de la source : %1.lf\nposition de la source : %d\n", s.objet.nom, s.nbEchantillons, s.initTemp, s.src.valTemp,  s.src.posSrc);
+    fprintf(file, "%s\n%d\n%1.lf\n%1.lf\n%d", s.objet.nom, s.nbEchantillons, s.initTemp, s.src.valTemp,  s.src.posSrc);
     fclose(file);
 }
 
@@ -228,7 +227,7 @@ int main(){
     writeCalc("resultats.txt", calcul, taille, t_simu);
     writeCarac("caracteristiques.txt", fil);
 	carac = fopen("caracteristiques.txt", "a");
-	fprintf(carac, "temps de simulation (s) %lf", t_simu);
+	fprintf(carac, "\n%lf", t_simu);
 	fclose(carac);
 	printf("resultats prets\n");
 	
