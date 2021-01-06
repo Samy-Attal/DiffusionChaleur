@@ -5,9 +5,18 @@
 #define dy 0.001
 #define dt 0.000001
 
+#ifdef WINDOWS_LIKE
+#define file_materiaux ".\\initialisation\\materiaux.txt"
+#define file_source ".\\initialisation\\source.txt"
+#define file_syst ".\\initialisation\\syst.txt"
+
+#else
+
 #define file_materiaux "./initialisation/materiaux.txt"
 #define file_source "./initialisation/source.txt"
 #define file_syst "./initialisation/syst.txt"
+
+#endif
 
 typedef struct {
 	char nom[10];
