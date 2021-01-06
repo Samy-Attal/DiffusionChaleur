@@ -186,7 +186,8 @@ void writeFiles(syst s){
     int nbfiles = s.t_micro / 100000; //afin d'avoir 10 "images" pour 1 seconde
     char name[25] = "./resultats2D/image00.txt";
     while(f < nbfiles) {
-        name[19] = f+48;
+        name[19] = (f / 10) + 48 ;  
+        name[20] = (f % 10) + 48;
         file = fopen(name, "w"); 
         for(j=0;j<s.x;j++){
             for(k=0;k<s.y;k++)
