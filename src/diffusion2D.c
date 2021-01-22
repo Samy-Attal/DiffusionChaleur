@@ -105,7 +105,7 @@ void writeFiles(syst s){
     int i=0,j,k,f=0;
     FILE* file;
     int nbfiles = s.t_micro / 100000; //afin d'avoir 10 "images" pour 1 seconde
-    char name[25] = "./resultats2D/image00.txt";
+    char name[26] = "./resultats2D/image00.txt";
     while(f < nbfiles) {
         name[19] = (f / 10) + 48 ;  
         name[20] = (f % 10) + 48;
