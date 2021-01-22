@@ -102,12 +102,9 @@ float*** calculChaleur2D(syst s) {
 
 void writeFiles(syst s){
     float*** calcul = calculChaleur2D(s);
-    int i=0,j,k,f=0;;
+    int i=0,j,k,f=0;
     FILE* file;
-    printf("ecriture des images en cours\n");
     int nbfiles = s.t_micro / 100000; //afin d'avoir 10 "images" pour 1 seconde
-    if(nbfiles > 100)
-        nbfiles = 100; // afin de ne pas avoir trop d'images non plus (limitation a 10 secondes de simulation)  
     char name[25] = "./resultats2D/image00.txt";
     while(f < nbfiles) {
         name[19] = (f / 10) + 48 ;  
