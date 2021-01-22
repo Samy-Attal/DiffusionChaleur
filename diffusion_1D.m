@@ -13,5 +13,4 @@ colorbar
 title('Diffusion 1D');
 xlabel('time samples (s)');
 ylabel('Nb segments (mm)');
-
 end 

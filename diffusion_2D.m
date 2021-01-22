@@ -13,15 +13,16 @@ Tinit=metaData(4); % temperature initiale
 
 
 % init film avi
-v = VideoWriter('newfile.avi');
+v = VideoWriter('diffusion2D.avi');
 v.FrameRate=1;
 open(v);
 
 
 % lecture fichiers de donnees
-fichtxt=dir(fullfile('.',rep,'image*.txt'))
+fichtxt=dir(fullfile('.',rep,'image*.txt'));
 
-nbfich=size(fichtxt,1);
+%nbfich=size(fichtxt,1);
+nbfich = Delta_t * 10
 
 for ifich=1:nbfich % boucles sur les pas de temps
     
@@ -58,3 +59,4 @@ close(v) % fin ecriture .AVI
 % rep='images';
 % load(fullfile('.',rep,'datamovie.mat'),'F');
 % movie(F,1,1) %relecture de F 
+end
