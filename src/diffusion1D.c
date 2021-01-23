@@ -147,7 +147,7 @@ float** calculChaleur(syst1 s, int echantillons, float tps) {
 			res[x][1] = s.initTemp;
 		}
 	}
-	// effets de bords T(a,t) = Ta et T(b,t) = Tb pour tout t>0, conditions limites de la plaque
+	// effets de bords T(a,t) = Ta et T(b,t) = Tb pour tout t>0, conditions limites du fil
 	for (t = 1; t < t_micro + 1 ; t++) {
 		res[0][t] = s.initTemp;
 		res[echantillons- 1][t] = s.initTemp;

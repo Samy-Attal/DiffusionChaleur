@@ -32,7 +32,7 @@ Vous pouvez bien evidemment modifier la configuration de la source de chaleur en
 Monodimensionnel (dossier resultat1D)
 - caracteristiques.txt : contient les propritetes de la simulation 1D sous cette forme :
 
-    nom_du_materiau_choisit
+    nom_du_materiau_choisi
     taille_en_mm_du_fil 
     temperature_initiale
     temperature_de_la_source_de_chaleur

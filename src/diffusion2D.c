@@ -89,9 +89,6 @@ float*** calculChaleur2D(syst s) {
                     dTx = (res[t-1][x+1][y] + res[t-1][x-1][y] - 2*res[t-1][x][y]) / (dx * dx);
                     dTy = (res[t-1][x][y+1] + res[t-1][x][y-1] - 2*res[t-1][x][y]) / (dy * dy); 
                     res[t][x][y] += dt*(alpha * (dTx + dTy)); 
-                    /*
-                    if(x >= s.src.posx && x < s.src.posx + s.src.dimx && y >= s.src.posy && y < s.src.posy + s.src.dimy)
-                        res[t][x][y] += s.src.temp;*/
                 }
             }
         }

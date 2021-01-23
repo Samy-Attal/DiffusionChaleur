@@ -14,7 +14,7 @@ Tinit=metaData(4); % temperature initiale
 
 % init film avi
 v = VideoWriter('diffusion2D.avi');
-v.FrameRate=1;
+v.FrameRate=10;
 open(v);
 
 
