@@ -1,15 +1,18 @@
-function diffusion_2D %(nomMateriau)
+function diffusion_2D
 
 rep='resultats2D';
 
 % lecture format data
 fileID = fopen(fullfile('.','initialisation','syst.txt'),'rt');
-metaData=fscanf(fileID,'%f');  % utiliser fgetl pour de la chaine de caractere
-dimx=metaData(1); % 1ere dim materiau
-dimy=metaData(2); % 2eme dim materiau
-Delta_t=metaData(3); % dur�e temporelle simu
-Tinit=metaData(4); % temperature initiale
+metaData = fscanf(fileID,'%d'); 
+dimx = metaData(1); % 1ere dim materiau
+dimy = metaData(2); % 2eme dim materiau
+Delta_t = metaData(3); % dur�e temporelle simu
+Tinit = metaData(4); % temperature initiale
 
+filesrc = fopen(fullfile('.','initialisation','source.txt'),'rt');
+metaSrc = fscanf(filesrc,'%d');
+Tempsrc = metaSrc(5);
 
 
 % init film avi
@@ -22,7 +25,7 @@ open(v);
 fichtxt=dir(fullfile('.',rep,'image*.txt'));
 
 %nbfich=size(fichtxt,1);
-nbfich = Delta_t * 10
+nbfich = Delta_t * 10;
 
 for ifich=1:nbfich % boucles sur les pas de temps
     
@@ -33,15 +36,16 @@ for ifich=1:nbfich % boucles sur les pas de temps
     fileID = fopen(fullfile('.',rep,nomfich),'rt');        
 
     % lecture
-    A=fscanf(fileID,'%f'); % fichier txt-> 1 vecteur
-    Data=reshape(A,dimx,dimy).'; % reformatage des donnees 1 vecteur -> 1 matrice  ( .'=transpose NON conjugue)
+    A=fscanf(fileID,'%d'); % fichier txt-> 1 vecteur
+    Data=reshape(A,dimx,dimy).'; % reformatage des donnees 
     
     figure(1)
     imagesc(Data)
     xlabel('[mm]')
     ylabel('[mm]')
     title('diffusion T�K 2D')
-    
+    colorbar
+    caxis([Tinit Tempsrc]);
     drawnow
     pause(0.1)
     
