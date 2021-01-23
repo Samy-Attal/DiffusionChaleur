@@ -5,7 +5,7 @@
 
 int main(){
     int choix, taille, t_simu;
-    syst1 fil;
+    syst1 fil; syst pcb;
 
     printf("Simulation de la diffusion de chaleur\nVeuillez choisir entre :\n1. monodimensionnel\n2. bidimensionnel\n");
     choix = readInt();
@@ -20,7 +20,11 @@ int main(){
         writeCarac(file_carac,fil);
     }
     else if(choix == 2){
-        writeFiles(initSys2D(file_syst, file_source));
+        pcb = initSys2D(file_syst, file_source);
+        printf("configuration : dimension surface : %d x %d mm\n",pcb.x,pcb.y);
+        printf("temperature initiale : %.0f K\ntemps de simulation : %f s\n", pcb.temp0, pcb.t_micro*dt);
+        printf("source de chaleur :\n   position : %d %d\n   dimension : %d x %d\n   temperature : %.0f K\n",pcb.src.posx, pcb.src.posy, pcb.src.dimx, pcb.src.dimy, pcb.src.temp);
+        writeFiles(pcb);
     }
 
     printf("fin de la simulation\n");
