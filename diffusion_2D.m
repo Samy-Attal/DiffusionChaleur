@@ -7,7 +7,7 @@ fileID = fopen(fullfile('.','initialisation','syst.txt'),'rt');
 metaData=fscanf(fileID,'%f');  % utiliser fgetl pour de la chaine de caractere
 dimx=metaData(1); % 1ere dim materiau
 dimy=metaData(2); % 2eme dim materiau
-Delta_t=metaData(3); % durée temporelle simu
+Delta_t=metaData(3); % durï¿½e temporelle simu
 Tinit=metaData(4); % temperature initiale
 
 
@@ -36,14 +36,14 @@ for ifich=1:nbfich % boucles sur les pas de temps
     A=fscanf(fileID,'%f'); % fichier txt-> 1 vecteur
     Data=reshape(A,dimx,dimy).'; % reformatage des donnees 1 vecteur -> 1 matrice  ( .'=transpose NON conjugue)
     
-    figure(1000)
+    figure(1)
     imagesc(Data)
     xlabel('[mm]')
     ylabel('[mm]')
-    title('diffusion T°K 2D')
+    title('diffusion Tï¿½K 2D')
     
     drawnow
-    pause(0.5)
+    pause(0.1)
     
     F(ifich) = getframe;
     writeVideo(v,F(ifich));

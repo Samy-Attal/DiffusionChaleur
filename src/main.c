@@ -3,11 +3,9 @@
 #include "../include/diffusion1D.h"
 #include "../include/diffusion2D.h"
 
-
 int main(){
     int choix, taille, t_simu;
     syst1 fil;
-    syst pcb;
 
     printf("Simulation de la diffusion de chaleur\nVeuillez choisir entre :\n1. monodimensionnel\n2. bidimensionnel\n");
     choix = readInt();
