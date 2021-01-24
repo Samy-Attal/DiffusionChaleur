@@ -3,6 +3,19 @@ Projet diffusion de la chaleur par Lounes ALLIOUI Katherine VALENCIA Samy ATTAL 
 Ce projet entre dans le cadre de l'UE Methodes numeriques en C,
 ou nous concevons un logiciel permettant de simuler la diffusion de la chaleur dans un materiau.
 
+Compilez les fichiers sources (.c) et exectuez main, puis choisir la simulation souahitee, avec les chiffres 1 ou 2 
+respectivement simulation monodimensionnel ou bidimensionnel.
+Apres la simulation effectuee vous pouvez lancer le script main.m et afficher les resultats de la simulation souahitee.
+
+Simulation monodimensionnel 
+Les caracteristiques a entrer pour une simulation "basique" sont 
+- taille du fil = 50 mm
+- materiau = cuivre
+- temperature initiale = 290 K
+- temperature de la source = 320 K
+- position de la source = 24
+- temps de simulation = 5 s
+
 
 Explication des fichiers :
 

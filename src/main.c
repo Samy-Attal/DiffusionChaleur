@@ -23,7 +23,7 @@ int main(){
         pcb = initSys2D(file_syst, file_source);
         printf("configuration : dimension surface : %d x %d mm\n",pcb.x,pcb.y);
         printf("temperature initiale : %.0f K\ntemps de simulation : %f s\n", pcb.temp0, pcb.t_micro*dt);
-        printf("source de chaleur :\n   position : %d %d\n   dimension : %d x %d\n   temperature : %.0f K\n",pcb.src.posx, pcb.src.posy, pcb.src.dimx, pcb.src.dimy, pcb.src.temp);
+        printf("source de chaleur :\n   position : %d %d\n   dimension : %d x %d mm\n   temperature : %.0f K\n",pcb.src.posx, pcb.src.posy, pcb.src.dimx, pcb.src.dimy, pcb.src.temp);
         writeFiles(pcb);
     }
 
